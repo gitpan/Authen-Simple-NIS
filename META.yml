@@ -1,6 +1,6 @@
 ---
 name: Authen-Simple-NIS
-version: 0.1
+version: 0.2
 author:
   - Christian Hansen C<ch@ngmedia.com>
 abstract: Simple NIS authentication
@@ -11,5 +11,5 @@ requires:
 provides:
   Authen::Simple::NIS:
     file: lib/Authen/Simple/NIS.pm
-    version: 0.1
+    version: 0.2
 generated_by: Module::Build version 0.2611

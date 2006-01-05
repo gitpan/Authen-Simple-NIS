@@ -8,12 +8,12 @@ use Net::NIS         qw[YPERR_KEY YPERR_SUCCESS];
 use Net::NIS::Table  qw[];
 use Params::Validate qw[];
 
-our $VERSION = 0.1;
+our $VERSION = 0.2;
 
 __PACKAGE__->options({
     domain => {
         type     => Params::Validate::SCALAR,
-        optional => 0
+        optional => 1
     },
     map => {
         type     => Params::Validate::SCALAR,
@@ -22,17 +22,20 @@ __PACKAGE__->options({
     }
 });
 
-if ( my $domain = Net::NIS::yp_get_default_domain() ) {
-    __PACKAGE__->options->{default}  = $domain;
-    __PACKAGE__->options->{optional} = 1;
-}
-
 sub check {
     my ( $self, $username, $password ) = @_;
 
     my $domain = $self->domain;
-    my $nis    = Net::NIS::Table->new( $self->map, $domain );
 
+    unless ( $domain ||= Net::NIS::yp_get_default_domain() ) {
+
+        $self->log->error( qq/Failed to obtain default NIS domain./ )
+          if $self->log;
+
+        return 0;
+    }
+
+    my $nis   = Net::NIS::Table->new( $self->map, $domain );
     my $entry = $nis->match($username);
 
     unless ( $nis->status == YPERR_SUCCESS ) {
