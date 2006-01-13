@@ -5,7 +5,7 @@ WriteMakefile
           'NAME' => 'Authen::Simple::NIS',
           'VERSION_FROM' => 'lib/Authen/Simple/NIS.pm',
           'PREREQ_PM' => {
-                           'Authen::Simple' => '0',
+                           'Authen::Simple' => '0.3',
                            'Net::NIS' => '0'
                          },
           'INSTALLDIRS' => 'site',

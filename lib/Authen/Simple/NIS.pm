@@ -8,7 +8,7 @@ use Net::NIS         qw[YPERR_KEY YPERR_SUCCESS];
 use Net::NIS::Table  qw[];
 use Params::Validate qw[];
 
-our $VERSION = 0.2;
+our $VERSION = 0.3;
 
 __PACKAGE__->options({
     domain => {
@@ -60,7 +60,7 @@ sub check {
 
     my $encrypted = ( split( /:/, $entry ) )[1];
 
-    unless ( crypt( $password, $encrypted ) eq $encrypted ) {
+    unless ( $self->check_password( $password, $encrypted ) ) {
 
         $self->log->debug( qq/Failed to authenticate user '$username'. Reason: 'Invalid credentials'/ )
           if $self->log;
